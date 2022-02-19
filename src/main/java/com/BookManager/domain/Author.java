@@ -1,4 +1,4 @@
-package com.BookManager.domain;
+package com.bookmanager.domain;
 
 import java.util.ArrayList;
 import java.util.List;

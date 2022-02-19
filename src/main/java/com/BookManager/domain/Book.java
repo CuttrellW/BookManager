@@ -1,4 +1,4 @@
-package com.BookManager.domain;
+package com.bookmanager.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
