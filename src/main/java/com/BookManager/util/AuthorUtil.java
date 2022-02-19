@@ -24,13 +24,13 @@ public class AuthorUtil {
 
     // methods for extracting a random message used by Google Assistant
     public static String getRandomListOfAuthorsMessages() {
-        Integer listOfAuthorsValue = new Random().nextInt(listOfAuthorsValue.size());
+        Integer listOfAuthorsValue = new Random().nextInt(listOfAuthorsMessages.size());
 
         return listOfAuthorsMessages.get(listOfAuthorsValue);
     }
 
     public static String getRandomAuthorSelectionMessage() {
-        Integer listOfAuthorsSelectionValue = new Random().nextInt(listOfAuthorsSelectionValue.size());
+        Integer listOfAuthorsSelectionValue = new Random().nextInt(listOfAuthorsSelectionMessages.size());
 
         return listOfAuthorsSelectionMessages.get(listOfAuthorsSelectionValue);
     }
