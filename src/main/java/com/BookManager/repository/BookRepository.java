@@ -2,9 +2,9 @@ package com.BookManager.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.BookManager.domain.Author;
+import com.BookManager.domain.Book;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Author, Long>{
+public interface BookRepository extends JpaRepository<Book, Long>{
     
 }
