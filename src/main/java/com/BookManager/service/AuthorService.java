@@ -1,10 +1,9 @@
 package com.bookmanager.service;
 
-import java.util.ArrayList;
-
 import javax.transaction.Transactional;
 
 import com.bookmanager.repository.AuthorRepository;
+import com.bookmanager.domain.Author;
 import com.bookmanager.util.AuthorUtil;
 import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
@@ -12,6 +11,8 @@ import com.google.actions.api.DialogflowApp;
 import com.google.actions.api.ForIntent;
 import com.google.actions.api.response.ResponseBuilder;
 
+import java.util.List;
+import java.util.StringJoiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,6 @@ public class AuthorService extends DialogflowApp {
         ResponseBuilder responseBuilder = getResponseBuilder(request).add(response.toString());
         ActionResponse actionResponse = responseBuilder.build();
         logger.info(actionResponse.toJson());
+        return actionResponse;
     }
 }
