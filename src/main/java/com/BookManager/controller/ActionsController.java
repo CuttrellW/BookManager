@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bookmanager.service.ActionService;
 import com.bookmanager.service.AuthorService;
+import com.bookmanager.util.IntentUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class ActionsController {
         // get intent name (based on user request)
         try {
             String intentName = actionService.getIntentName(body);
-            if (intentName.equals("list_authors")) {
+            if (intentName.equals(IntentUtil.LIST_AUTHORS)) {
                 // invoke authorService->list_authors intent
                 String authorJsonResponse = authorService.handleRequest(body, getHeadersMap(request)).get();
                 return new ResponseEntity<String>(authorJsonResponse, HttpStatus.OK);

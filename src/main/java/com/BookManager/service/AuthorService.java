@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import com.bookmanager.repository.AuthorRepository;
 import com.bookmanager.domain.Author;
 import com.bookmanager.util.AuthorUtil;
+import com.bookmanager.util.IntentUtil;
 import com.google.actions.api.ActionRequest;
 import com.google.actions.api.ActionResponse;
 import com.google.actions.api.DialogflowApp;
@@ -26,9 +27,9 @@ public class AuthorService extends DialogflowApp {
     @Autowired
     private AuthorRepository authorRepository;
 
-    @ForIntent("list_authors")
+    @ForIntent(IntentUtil.LIST_AUTHORS)
     public ActionResponse findAll(ActionRequest request) {
-        logger.info("Executing intent list_authors");
+        logger.info("Executing intent - " + IntentUtil.LIST_AUTHORS);
 
         // find list of authors from database
         List<Author> authorsList = authorRepository.findAll();
