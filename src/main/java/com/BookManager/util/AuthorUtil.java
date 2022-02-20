@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class AuthorUtil {
 
+    public static final String NOT_FOUND_MESSAGE = "I cant find the requested author. Please try again.";
+    
     // list of messages for incoming requests (lis_authors intent)
     public static final List<String> listOfAuthorsMessages = new ArrayList<>();
 

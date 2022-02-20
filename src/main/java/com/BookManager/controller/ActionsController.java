@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bookmanager.service.ActionService;
 import com.bookmanager.service.AuthorService;
+import com.bookmanager.service.BookService;
 import com.bookmanager.util.IntentUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class ActionsController {
     @Autowired
     private AuthorService authorService;
 
+    @Autowired
+    private BookService bookService;
+
     @PostMapping
     public ResponseEntity<?> executePostAction(HttpServletRequest request, HttpServletResponse response) throws IOException{
         logger.info("--- executePostAction ---");
@@ -53,12 +57,13 @@ public class ActionsController {
 
             switch (intentName) {
                 case IntentUtil.LIST_AUTHORS:
-                    // invoke bookservice
+                    // invoke authorService
                     String authorJsonResponse = authorService.handleRequest(body, getHeadersMap(request)).get();
                     return new ResponseEntity<String>(authorJsonResponse, HttpStatus.OK); 
                 case IntentUtil.LIST_BOOKS_BY_AUTHOR:
                     // invoke bookService
-                    return new ResponseEntity<String>("not yet implemented", HttpStatus.OK);
+                    String bookJsonResponse = bookService.handleRequest(body, getHeadersMap(request)).get();
+                    return new ResponseEntity<String>(bookJsonResponse, HttpStatus.OK);
                 default:
                     return new ResponseEntity<String>("Request could not be processed", HttpStatus.OK);
             }
