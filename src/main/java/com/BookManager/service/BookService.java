@@ -86,7 +86,7 @@ public class BookService extends DialogflowApp{
         String bookTitle = request.getParameter("bookTitle").toString();
 
         // find book in database by title
-        Book book = bookRepository.findByTitleContainingIngoreCase(bookTitle);
+        Book book = bookRepository.findByTitleContainingIgnoreCase(bookTitle);
 
         if (book != null) {
             // build the response containing book details
