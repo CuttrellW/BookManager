@@ -11,12 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table (name="author")
+@Table (name = "author", uniqueConstraints = { @UniqueConstraint(columnNames = { "firstName", "lastName" }) })
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

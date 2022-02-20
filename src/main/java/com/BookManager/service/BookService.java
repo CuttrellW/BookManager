@@ -47,7 +47,7 @@ public class BookService extends DialogflowApp{
         String lastName = request.getParameter("last-name").toString();
 
         // extract author from database
-        Author author = authorRepository.findByFirstNameContainingIgnoreCaseandLastNameContainingIgnoreCase(firstName, lastName);
+        Author author = authorRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
         if (author != null) {
             // get list of books mapped to this author
             List<Book> booksList = bookRepository.findAll();
