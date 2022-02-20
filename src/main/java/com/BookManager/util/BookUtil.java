@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 public class BookUtil {
 
-    public static final String NOT_FOUND_MESSAGE = "I could not find the request book. Could you please try again?";
+    public static final String BOOK_NOT_FOUND_MESSAGE = "I could not find the request book. Could you please try again?";
+    public static final String BOOKS_NOT_FOUND_MESSAGE = "No books found based on your request. Please try again";
     public static final List<String> listOfBooksMessages = new ArrayList<>();
     public static final List<String> listOfBooksSelectionMessages = new ArrayList<>();
     public static final List<String> listBookDetailsMessages = new ArrayList<>();

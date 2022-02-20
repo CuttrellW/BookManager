@@ -78,7 +78,7 @@ public class BookService extends DialogflowApp{
     }
 
     @ForIntent(IntentUtil.GET_BOOK_DETAILS_BY_AUTHOR)
-    private ActionResponse getBookDetails(ActionRequest request) {
+    public ActionResponse getBookDetails(ActionRequest request) {
         StringBuilder response = new StringBuilder();
         ResponseBuilder responseBuilder = null;
 
@@ -102,12 +102,49 @@ public class BookService extends DialogflowApp{
             // create the responseBuilder object with the response
             responseBuilder = getResponseBuilder(request).add(response.toString()).endConversation();
         } else {
-            response.append(BookUtil.NOT_FOUND_MESSAGE);
+            response.append(BookUtil.BOOK_NOT_FOUND_MESSAGE);
             // create the responseBuilder object with response but do not end conversation
             responseBuilder = getResponseBuilder(request).add(response.toString());
         }
 
         // send back response to user
+        ActionResponse actionResponse = responseBuilder.build();
+        return actionResponse;
+    }
+
+    @ForIntent(IntentUtil.LIST_BOOKS_BY_GENRE)
+    public ActionResponse getBooksByGenre(ActionRequest request) {
+        logger.info("Executing intent - " + IntentUtil.LIST_BOOKS_BY_GENRE);
+
+        StringBuilder response = new StringBuilder();
+
+        // extract genre parameter from request
+        String genre = request.getParameter("Genre").toString();
+
+        // retrieve books under the specified genre
+        List<Book> bookList = bookRepository.findByGenreContainingIgnoreCase(genre);
+
+        if (bookList != null && bookList.size() > 0) {
+            // build the response
+            response = new StringBuilder(BookUtil.getRandomBookDetailsMessage());
+
+            // join books into list
+            StringJoiner sj = new StringJoiner(", ");
+            bookList.forEach(book -> sj.add(book.toString()));
+
+            // add list of books to respone
+            response.append(sj);
+            response.append(". ");
+
+            // ask if user wants to continue
+            response.append(BookUtil.getRandomBooksSelection());
+        } else {
+            // respond with books not found
+            response.append(BookUtil.BOOKS_NOT_FOUND_MESSAGE);
+        }
+
+        // create response and return it to the user
+        ResponseBuilder responseBuilder = getResponseBuilder(request).add(response.toString());
         ActionResponse actionResponse = responseBuilder.build();
         return actionResponse;
     }
