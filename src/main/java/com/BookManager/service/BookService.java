@@ -119,7 +119,7 @@ public class BookService extends DialogflowApp{
         StringBuilder response = new StringBuilder();
 
         // extract genre parameter from request
-        String genre = request.getParameter("Genre").toString();
+        String genre = request.getParameter("genre").toString();
 
         // retrieve books under the specified genre
         List<Book> bookList = bookRepository.findByGenreContainingIgnoreCase(genre);
