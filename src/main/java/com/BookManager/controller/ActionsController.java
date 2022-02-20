@@ -61,6 +61,7 @@ public class ActionsController {
                     String authorJsonResponse = authorService.handleRequest(body, getHeadersMap(request)).get();
                     return new ResponseEntity<String>(authorJsonResponse, HttpStatus.OK); 
                 case IntentUtil.LIST_BOOKS_BY_AUTHOR:
+                case IntentUtil.GET_BOOK_DETAILS_BY_AUTHOR:
                     // invoke bookService
                     String bookJsonResponse = bookService.handleRequest(body, getHeadersMap(request)).get();
                     return new ResponseEntity<String>(bookJsonResponse, HttpStatus.OK);

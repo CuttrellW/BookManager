@@ -53,7 +53,7 @@ public class BookService extends DialogflowApp{
             List<Book> booksList = bookRepository.findAll();
 
             // build response to user
-            response.append(BookUtil.getRandomListOfBookMessages());
+            response.append(BookUtil.getRandomBookMessages());
 
             // use StringJoiner to add comma delimited list of books
             StringJoiner sj = new StringJoiner(", ");
@@ -64,7 +64,7 @@ public class BookService extends DialogflowApp{
             response.append(". ");
 
             // add a random message to ask user to select book
-            response.append(BookUtil.getRandomListOfBooksSelection());
+            response.append(BookUtil.getRandomBooksSelection());
         } else {
             // author not found
             response.append(AuthorUtil.NOT_FOUND_MESSAGE);
@@ -74,6 +74,41 @@ public class BookService extends DialogflowApp{
         ResponseBuilder responseBuilder = getResponseBuilder(request).add(response.toString());
         ActionResponse actionResponse = responseBuilder.build();
 
+        return actionResponse;
+    }
+
+    @ForIntent(IntentUtil.GET_BOOK_DETAILS_BY_AUTHOR)
+    private ActionResponse getBookDetails(ActionRequest request) {
+        StringBuilder response = new StringBuilder();
+        ResponseBuilder responseBuilder = null;
+
+        // extract book title from request
+        String bookTitle = request.getParameter("bookTitle").toString();
+
+        // find book in database by title
+        Book book = bookRepository.findByTitleContainingIngoreCase(bookTitle);
+
+        if (book != null) {
+            // build the response containing book details
+            response.append(BookUtil.getRandomBookDetailsMessage());
+
+            response.append(book.getTitle());
+            response.append(" was published in ");
+            response.append(book.getYear());
+            response.append(" and can be categorized as a ");
+            response.append(book.getGenre());
+            response.append(book.getSummary());
+
+            // create the responseBuilder object with the response
+            responseBuilder = getResponseBuilder(request).add(response.toString()).endConversation();
+        } else {
+            response.append(BookUtil.NOT_FOUND_MESSAGE);
+            // create the responseBuilder object with response but do not end conversation
+            responseBuilder = getResponseBuilder(request).add(response.toString());
+        }
+
+        // send back response to user
+        ActionResponse actionResponse = responseBuilder.build();
         return actionResponse;
     }
 }
