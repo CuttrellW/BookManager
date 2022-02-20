@@ -50,16 +50,22 @@ public class ActionsController {
         // get intent name (based on user request)
         try {
             String intentName = actionService.getIntentName(body);
-            if (intentName.equals(IntentUtil.LIST_AUTHORS)) {
-                // invoke authorService->list_authors intent
-                String authorJsonResponse = authorService.handleRequest(body, getHeadersMap(request)).get();
-                return new ResponseEntity<String>(authorJsonResponse, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<String>("Request could not be processed", HttpStatus.OK);
+
+            switch (intentName) {
+                case IntentUtil.LIST_AUTHORS:
+                    // invoke bookservice
+                    String authorJsonResponse = authorService.handleRequest(body, getHeadersMap(request)).get();
+                    return new ResponseEntity<String>(authorJsonResponse, HttpStatus.OK); 
+                case IntentUtil.LIST_BOOKS_BY_AUTHOR:
+                    // invoke bookService
+                    return new ResponseEntity<String>("not yet implemented", HttpStatus.OK);
+                default:
+                    return new ResponseEntity<String>("Request could not be processed", HttpStatus.OK);
             }
+
         } catch (Exception e) {
             logger.error("Error " + e.getMessage());
-            return new ResponseEntity<String>("Could not process the request", HttpStatus.OK);
+            return new ResponseEntity<String>("Request could not be processed", HttpStatus.OK);
         }
     }
 
