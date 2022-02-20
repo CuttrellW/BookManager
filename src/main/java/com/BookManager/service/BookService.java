@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.grpc.Internal;
+
 
 @Service
 @Transactional
@@ -77,7 +79,57 @@ public class BookService extends DialogflowApp{
         return actionResponse;
     }
 
+    @ForIntent(IntentUtil.LIST_BOOKS_BY_GENRE)
+    public ActionResponse getBooksByGenre(ActionRequest request) {
+        logger.info("Executing intent - " + IntentUtil.LIST_BOOKS_BY_GENRE);
+
+        StringBuilder response = new StringBuilder();
+
+        // extract genre parameter from request
+        String genre = request.getParameter("genre").toString();
+
+        // retrieve books under the specified genre
+        List<Book> bookList = bookRepository.findByGenreContainingIgnoreCase(genre);
+
+        if (bookList != null && bookList.size() > 0) {
+            // build the response
+            response = new StringBuilder(BookUtil.getRandomBookMessages());
+
+            // join books into list
+            StringJoiner sj = new StringJoiner(", ");
+            bookList.forEach(book -> sj.add(book.toString()));
+
+            // add list of books to respone
+            response.append(sj);
+            response.append(". ");
+
+            // ask if user wants to continue
+            response.append(BookUtil.getRandomBooksSelection());
+        } else {
+            // respond with books not found
+            response.append(BookUtil.BOOKS_NOT_FOUND_MESSAGE);
+        }
+
+        // create response and return it to the user
+        ResponseBuilder responseBuilder = getResponseBuilder(request).add(response.toString());
+        ActionResponse actionResponse = responseBuilder.build();
+        return actionResponse;
+    }
+
     @ForIntent(IntentUtil.GET_BOOK_DETAILS_BY_AUTHOR)
+    public ActionResponse getBookDetailsByAuthor(ActionRequest request) {
+        logger.info("Executing intent - " + IntentUtil.GET_BOOK_DETAILS_BY_AUTHOR);
+
+        return getBookDetails(request);
+    }
+
+    @ForIntent(IntentUtil.GET_BOOK_DETAILS_BY_GENRE)
+    public ActionResponse getBookDetailsByGenre (ActionRequest request) {
+        logger.info("Executing intent - " + IntentUtil.GET_BOOK_DETAILS_BY_GENRE);
+
+        return getBookDetails(request);
+    }
+
     public ActionResponse getBookDetails(ActionRequest request) {
         StringBuilder response = new StringBuilder();
         ResponseBuilder responseBuilder = null;
@@ -108,43 +160,6 @@ public class BookService extends DialogflowApp{
         }
 
         // send back response to user
-        ActionResponse actionResponse = responseBuilder.build();
-        return actionResponse;
-    }
-
-    @ForIntent(IntentUtil.LIST_BOOKS_BY_GENRE)
-    public ActionResponse getBooksByGenre(ActionRequest request) {
-        logger.info("Executing intent - " + IntentUtil.LIST_BOOKS_BY_GENRE);
-
-        StringBuilder response = new StringBuilder();
-
-        // extract genre parameter from request
-        String genre = request.getParameter("genre").toString();
-
-        // retrieve books under the specified genre
-        List<Book> bookList = bookRepository.findByGenreContainingIgnoreCase(genre);
-
-        if (bookList != null && bookList.size() > 0) {
-            // build the response
-            response = new StringBuilder(BookUtil.getRandomBookDetailsMessage());
-
-            // join books into list
-            StringJoiner sj = new StringJoiner(", ");
-            bookList.forEach(book -> sj.add(book.toString()));
-
-            // add list of books to respone
-            response.append(sj);
-            response.append(". ");
-
-            // ask if user wants to continue
-            response.append(BookUtil.getRandomBooksSelection());
-        } else {
-            // respond with books not found
-            response.append(BookUtil.BOOKS_NOT_FOUND_MESSAGE);
-        }
-
-        // create response and return it to the user
-        ResponseBuilder responseBuilder = getResponseBuilder(request).add(response.toString());
         ActionResponse actionResponse = responseBuilder.build();
         return actionResponse;
     }
