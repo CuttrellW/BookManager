@@ -56,6 +56,9 @@ public class ActionsController {
             String intentName = actionService.getIntentName(body);
 
             switch (intentName) {
+                case IntentUtil.LIST_ACTIONS:
+                    String actionJsonResponse = actionService.handleRequest(body, getHeadersMap(request)).get();
+                    return new ResponseEntity<String>(actionJsonResponse, HttpStatus.OK);
                 case IntentUtil.LIST_AUTHORS:
                     // invoke authorService
                     String authorJsonResponse = authorService.handleRequest(body, getHeadersMap(request)).get();

@@ -1,6 +1,7 @@
 package com.bookmanager.repository;
 
 import com.bookmanager.domain.Book;
+import com.bookmanager.domain.Author;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface BookRepository extends JpaRepository<Book, Long>{
     Book findByTitleContainingIgnoreCase(String bookTitle);
 
     List<Book> findByGenreContainingIgnoreCase(String genre);
+
+    List<Book> findByAuthor(Author author);
 }

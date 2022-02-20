@@ -52,7 +52,7 @@ public class BookService extends DialogflowApp{
         Author author = authorRepository.findByFirstNameContainingIgnoreCaseAndLastNameContainingIgnoreCase(firstName, lastName);
         if (author != null) {
             // get list of books mapped to this author
-            List<Book> booksList = bookRepository.findAll();
+            List<Book> booksList = bookRepository.findByAuthor(author);
 
             // build response to user
             response.append(BookUtil.getRandomBookMessages());
@@ -149,6 +149,7 @@ public class BookService extends DialogflowApp{
             response.append(book.getYear());
             response.append(" and can be categorized as a ");
             response.append(book.getGenre());
+            response.append(". ");
             response.append(book.getSummary());
 
             // create the responseBuilder object with the response
